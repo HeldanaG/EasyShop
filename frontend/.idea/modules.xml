@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/capstone-client-web-application.iml" filepath="$PROJECT_DIR$/.idea/capstone-client-web-application.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../backend/src/main/main2.iml" filepath="$PROJECT_DIR$/../backend/src/main/main2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../backend/src/test/test2.iml" filepath="$PROJECT_DIR$/../backend/src/test/test2.iml" />
     </modules>
   </component>
 </project>
