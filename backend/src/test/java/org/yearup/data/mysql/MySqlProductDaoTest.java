@@ -45,5 +45,35 @@ class MySqlProductDaoTest extends BaseDaoTestClass
         // assert
         assertEquals(expected.getPrice(), actual.getPrice(), "Because I tried to get product 1 from the database.");
     }
+    @Test
+    public void update_shouldModifyExistingProduct()
+    {
+        int productId = 1;
+        Product updated = new Product()
+        {{
+            setProductId(productId);
+            setName("Updated Smartphone");
+            setPrice(new BigDecimal("399.99"));
+            setCategoryId(1);
+            setDescription("Updated description");
+            setColor("Blue");
+            setStock(100);
+            setFeatured(true);
+            setImageUrl("updated.jpg");
+        }};
+
+        dao.update(productId, updated);
+        Product actual = dao.getById(productId);
+
+        assertEquals(updated.getName(), actual.getName());
+        assertEquals(updated.getPrice(), actual.getPrice());
+        assertEquals(updated.getDescription(), actual.getDescription());
+        assertEquals(updated.getColor(), actual.getColor());
+        assertEquals(updated.getStock(), actual.getStock());
+        assertEquals(updated.isFeatured(), actual.isFeatured());
+        assertEquals(updated.getImageUrl(), actual.getImageUrl());
+    }
+
+
 
 }
