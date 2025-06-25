@@ -18,4 +18,7 @@ public interface    ShoppingCartDao
 
     // 4. Clear the user's entire cart
     void clear(int userId);
+
+    // 5. Delete a single product from the cart
+    void removeItem(int userId, int productId);
 }
