@@ -46,7 +46,7 @@ public class ShoppingCartController
             int userId = user.getId();
 
             // use the shoppingcartDao to get all items in the cart and return the cart
-            return null;
+            return shoppingCartDao.getByUserId(userId);
         }
         catch(Exception e)
         {
@@ -60,9 +60,12 @@ public class ShoppingCartController
     @PostMapping("/products/{productId}")     // POST /cart/products/{productId} - add or increment quantity by 1
 
     @ResponseStatus(HttpStatus.CREATED)
-    public void addToCart(@PathVariable int productId, Principal principal) {
+    public ShoppingCart addToCart(@PathVariable int productId, Principal principal) {
         User user = userDao.getByUserName(principal.getName());
-        shoppingCartDao.addOrIncrement(user.getId(), productId);
+        int userId=user.getId();
+        shoppingCartDao.addOrIncrement(userId, productId);
+
+        return  shoppingCartDao.getByUserId(userId);
     }
 
     // add a PUT method to update an existing product in the cart - the url should be
@@ -70,29 +73,38 @@ public class ShoppingCartController
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
 
     @PutMapping("/products/{productId}") // PUT /cart/products/{productId} - set quantity (only if product already in cart)
-    public void setQuantity(@PathVariable int productId,
+    public ShoppingCart setQuantity(@PathVariable int productId,
                             @RequestBody Map<String, Integer> body,
                             Principal principal) {
         int quantity = body.getOrDefault("quantity", 1);
         User user = userDao.getByUserName(principal.getName());
-        shoppingCartDao.setQuantity(user.getId(), productId, quantity);
+        int userId=user.getId();
+        shoppingCartDao.setQuantity(userId, productId, quantity);
+        return  shoppingCartDao.getByUserId(userId);
+
     }
 
     // add a DELETE method to clear all products from the current users cart
     // https://localhost:8080/cart
 
     @DeleteMapping     // DELETE /cart - clear entire cart
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void clearCart(Principal principal) {
-        User user = userDao.getByUserName(principal.getName());
-        shoppingCartDao.clear(user.getId());
+    public ShoppingCart clearCart(Principal principal) {
+        try {
+            User user = userDao.getByUserName(principal.getName());
+            int userId = user.getId();
+            shoppingCartDao.clear(userId);
+            return shoppingCartDao.getByUserId(userId);
+        }catch(Exception e){
+            throw new ResponseStatusException( HttpStatus.INTERNAL_SERVER_ERROR,"Oops .. my bad");
+        }
     }
 
     // BONUS: DELETE /cart/products/{productId} - remove one item (optional)
     @DeleteMapping("/products/{productId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeItem(@PathVariable int productId, Principal principal) {
+    public ShoppingCart removeItem(@PathVariable int productId, Principal principal) {
         User user = userDao.getByUserName(principal.getName());
-        shoppingCartDao.removeItem(user.getId(), productId);
+        int userId=user.getId();
+        shoppingCartDao.removeItem(userId, productId);
+        return  shoppingCartDao.getByUserId(userId);
     }
 }

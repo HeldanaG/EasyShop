@@ -20,9 +20,7 @@ public class MySqlProfileDaoTest extends BaseDaoTestClass
         dao = new MySqlProfileDao(dataSource);
     }
 
-    /**
-     * Test: create() should insert a profile and return it with matching fields.
-     */
+    // create() should insert a profile and return it with matching fields.
     @Test
     public void create_shouldInsertProfileSuccessfully()
     {
