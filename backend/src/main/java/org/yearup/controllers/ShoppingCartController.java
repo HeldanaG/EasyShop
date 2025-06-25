@@ -56,10 +56,7 @@ public class ShoppingCartController
 
     // add a POST method to add a product to the cart - the url should be
     // https://localhost:8080/cart/products/15 (15 is the productId to be added
-
     @PostMapping("/products/{productId}")     // POST /cart/products/{productId} - add or increment quantity by 1
-
-    @ResponseStatus(HttpStatus.CREATED)
     public ShoppingCart addToCart(@PathVariable int productId, Principal principal) {
         User user = userDao.getByUserName(principal.getName());
         int userId=user.getId();
@@ -71,7 +68,6 @@ public class ShoppingCartController
     // add a PUT method to update an existing product in the cart - the url should be
     // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
-
     @PutMapping("/products/{productId}") // PUT /cart/products/{productId} - set quantity (only if product already in cart)
     public ShoppingCart setQuantity(@PathVariable int productId,
                             @RequestBody Map<String, Integer> body,
@@ -86,7 +82,6 @@ public class ShoppingCartController
 
     // add a DELETE method to clear all products from the current users cart
     // https://localhost:8080/cart
-
     @DeleteMapping     // DELETE /cart - clear entire cart
     public ShoppingCart clearCart(Principal principal) {
         try {
@@ -99,7 +94,7 @@ public class ShoppingCartController
         }
     }
 
-    // BONUS: DELETE /cart/products/{productId} - remove one item (optional)
+    // DELETE /cart/products/{productId} - remove one item
     @DeleteMapping("/products/{productId}")
     public ShoppingCart removeItem(@PathVariable int productId, Principal principal) {
         User user = userDao.getByUserName(principal.getName());
