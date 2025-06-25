@@ -1,6 +1,9 @@
 package org.yearup.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.yearup.data.ProductDao;
 import org.yearup.data.ShoppingCartDao;
@@ -9,9 +12,14 @@ import org.yearup.models.ShoppingCart;
 import org.yearup.models.User;
 
 import java.security.Principal;
+import java.util.Map;
 
 // convert this class to a REST controller
 // only logged in users should have access to these actions
+@RestController
+@CrossOrigin
+@RequestMapping("/cart")
+@PreAuthorize("isAuthenticated()")
 public class ShoppingCartController
 {
     // a shopping cart requires
@@ -19,9 +27,14 @@ public class ShoppingCartController
     private UserDao userDao;
     private ProductDao productDao;
 
-
+    @Autowired
+    public ShoppingCartController(ShoppingCartDao shoppingCartDao, UserDao userDao) {
+        this.shoppingCartDao = shoppingCartDao;
+        this.userDao = userDao;
+    }
 
     // each method in this controller requires a Principal object as a parameter
+    @GetMapping
     public ShoppingCart getCart(Principal principal)
     {
         try
@@ -44,13 +57,42 @@ public class ShoppingCartController
     // add a POST method to add a product to the cart - the url should be
     // https://localhost:8080/cart/products/15 (15 is the productId to be added
 
+    @PostMapping("/products/{productId}")     // POST /cart/products/{productId} - add or increment quantity by 1
+
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addToCart(@PathVariable int productId, Principal principal) {
+        User user = userDao.getByUserName(principal.getName());
+        shoppingCartDao.addOrIncrement(user.getId(), productId);
+    }
 
     // add a PUT method to update an existing product in the cart - the url should be
     // https://localhost:8080/cart/products/15 (15 is the productId to be updated)
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated
 
+    @PutMapping("/products/{productId}") // PUT /cart/products/{productId} - set quantity (only if product already in cart)
+    public void setQuantity(@PathVariable int productId,
+                            @RequestBody Map<String, Integer> body,
+                            Principal principal) {
+        int quantity = body.getOrDefault("quantity", 1);
+        User user = userDao.getByUserName(principal.getName());
+        shoppingCartDao.setQuantity(user.getId(), productId, quantity);
+    }
 
     // add a DELETE method to clear all products from the current users cart
     // https://localhost:8080/cart
 
+    @DeleteMapping     // DELETE /cart - clear entire cart
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void clearCart(Principal principal) {
+        User user = userDao.getByUserName(principal.getName());
+        shoppingCartDao.clear(user.getId());
+    }
+
+    // BONUS: DELETE /cart/products/{productId} - remove one item (optional)
+    @DeleteMapping("/products/{productId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeItem(@PathVariable int productId, Principal principal) {
+        User user = userDao.getByUserName(principal.getName());
+        shoppingCartDao.removeItem(user.getId(), productId);
+    }
 }
