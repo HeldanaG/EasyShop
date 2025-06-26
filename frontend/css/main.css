@@ -200,3 +200,13 @@ main > .content-form .cart-item
     margin-bottom: 2px !important;
 }
 
+header a {
+    color: #dc3545 !important;          /* Bootstrap red */
+    font-weight: 500;
+    text-decoration: none;
+}
+
+header a:hover {
+    color: #a71d2a !important;
+    text-decoration: underline;
+}
