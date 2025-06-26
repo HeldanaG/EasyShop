@@ -59,12 +59,11 @@ public class MySqlOrderDao extends MySqlDaoBase implements OrderDao {
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
             stmt.setInt(1, lineItem.getOrderId());
             stmt.setInt(2, lineItem.getProductId());
-            stmt.setDouble(3, lineItem.getSalesPrice());
+            stmt.setBigDecimal(3, lineItem.getSalesPrice());
             stmt.setInt(4, lineItem.getQuantity());
-            stmt.setDouble(5, lineItem.getDiscount());
+            stmt.setBigDecimal(5, lineItem.getDiscount());
 
             stmt.executeUpdate();
         } catch (SQLException e) {

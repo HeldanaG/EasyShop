@@ -34,6 +34,8 @@ public class ShoppingCartItem
     public BigDecimal getDiscountPercent()
     {
         return discountPercent;
+
+
     }
 
     public void setDiscountPercent(BigDecimal discountPercent)
