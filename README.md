@@ -1,9 +1,6 @@
   # ![logo](https://github.com/user-attachments/assets/db3515d6-2c95-41cf-a123-0694cc06c0cf)
 
-EasyShop version 2 is a simple e-commerce web application developed with Java, Spring Boot, and MySQL. It allows users to browse products, manage their shopping cart, 
-and place orders. Admin users can manage products, categories, and user roles. The system provides secure authentication and authorization for all user actions. we were provided with starter code that was incomplete and contained a few bugs that we needed to address.
-Throughout the development process, we leveraged Postman to run a series of tests to ensure that our controllers and DAOs were functioning correctly. 
-These tests were essential in validating the integrity and behavior of our application endpoints.
+EasyShop Version 2 is a backend-focused e-commerce application developed using Java, Spring Boot, and MySQL. It supports essential features like product browsing, shopping cart management, and order processing for users, while administrators can manage products, categories, and user roles. The project started from partially completed starter code that contained several bugs and missing implementations. As part of the development process, I was responsible for identifying and fixing these issues, implementing missing features, and writing unit tests for all DAO classes to ensure data access functionality. I used Postman throughout the project to test the API endpoints and confirm that controllers and DAOs behaved as expected. These tests were crucial in verifying the integrity and reliability of the application’s backend.
 
 ---
 
